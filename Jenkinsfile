@@ -1,5 +1,11 @@
 pipeline {
-  agent none
+  agent {
+    docker {
+        image 'maven'
+        args  '-v /maven/repository:/usr/share/maven/ref/repository'
+        reuseNode true
+    }
+  }
   stages {
     stage('Build') {
       steps {

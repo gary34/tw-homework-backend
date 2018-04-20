@@ -1,14 +1,14 @@
 pipeline {
   agent none
   stages {
-    agent {
-      docker {
-          image 'maven'
-          args  '-v maven-repo:/root/.m2'
-          reuseNode true
-      }
-  }
     stage('Build') {
+      agent {
+        docker {
+            image 'maven'
+            args  '-v maven-repo:/root/.m2'
+            reuseNode true
+        }
+      }
       steps {
         sh 'mvn clean package'
       }

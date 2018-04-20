@@ -1,10 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'maven'
-    }
-
-  }
+  agent none
   stages {
     stage('Build') {
       steps {
@@ -17,8 +12,19 @@ pipeline {
       }
     }
     stage('Deploy Development') {
+      when {
+        branch 'develop'
+      }
       steps {
         sh 'echo \'deploy to development\''
+      }
+    }
+    stage('Deploy Production') {
+      when {
+        branch 'master'
+      }
+      steps {
+        sh 'echo \'deploy to production\''
       }
     }
   }

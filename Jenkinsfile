@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  environment {
+      CODE_VERSION = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+  }
   stages {
     stage('Build') {
       agent {
@@ -10,7 +13,9 @@ pipeline {
         }
       }
       steps {
-        sh 'mvn clean package'
+        sh 'mvn clean packages'
+        sh 'mkdir -p packages'
+        sh 'cp target/backend-1.0-SNAPSHOT packages/backend-${CODE_VERSION}.jar'
       }
     }
     stage('Test') {
@@ -21,7 +26,7 @@ pipeline {
     stage('Prepare Deploy') {
         steps {
             sh 'rm -rf tw-homework-ansible-master && wget https://github.com/gary34/tw-homework-ansible/archive/master.zip && unzip master.zip'
-            sh 'cp target/backend-*.jar tw-homework-ansible-master/roles/backend/files/'
+            sh 'cp packages/backend-${CODE_VERSION}.jar  tw-homework-ansible-master/roles/backend/files/backend.jar'
         }
     }
     stage('Deploy Development') {

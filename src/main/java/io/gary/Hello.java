@@ -66,6 +66,11 @@ public class Hello {
         }
         return new GeoInfo();
     }
+    
+    @GetMapping("/")
+    private String home(){
+        return "hello";
+    }
 
     @GetMapping("/geo")
     @JsonView(GeoInfo.class)

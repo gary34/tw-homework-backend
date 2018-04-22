@@ -13,7 +13,7 @@ pipeline {
         }
       }
       steps {
-        sh 'mvn clean packages'
+        sh 'mvn clean package'
         sh 'mkdir -p packages'
         sh 'cp target/backend-1.0-SNAPSHOT packages/backend-${CODE_VERSION}.jar'
       }
